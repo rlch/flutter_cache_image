@@ -17,7 +17,6 @@ import 'package:firebase_storage/firebase_storage.dart';
  */
 
 class CacheImage extends StatefulWidget {
-
   CacheImage.firebase({
     Key key,
     this.prefix = 'appspot.com',
@@ -32,7 +31,7 @@ class CacheImage extends StatefulWidget {
     this.foregroundDecoration,
     this.matchTextDirection = false,
     @required this.path,
-  }) : type = 1,
+  })  : type = 1,
         assert(path != null),
         super(key: key);
 
@@ -147,13 +146,11 @@ class CacheImage extends StatefulWidget {
   /// BoxDecoration filter to apply over the image
   final BoxDecoration foregroundDecoration;
 
-
   @override
   State<StatefulWidget> createState() => new _CacheImage();
 }
 
 class _CacheImage extends State<CacheImage> {
-
   String filePath;
   Directory tempDir;
   bool validator = false;
@@ -162,9 +159,9 @@ class _CacheImage extends State<CacheImage> {
   void parse() async {
     String local;
     List<String> splitted;
-    tempDir =  await getTemporaryDirectory();
+    tempDir = await getTemporaryDirectory();
 
-    switch (widget.type){
+    switch (widget.type) {
       case 1:
         splitted = widget.path.split(widget.prefix);
         local = tempDir.path + splitted[splitted.length - 1];
@@ -174,17 +171,17 @@ class _CacheImage extends State<CacheImage> {
         local = tempDir.path + splitted[splitted.length - 1];
         break;
     }
-    File(local).length().then((length){
+    File(local).length().then((length) {
       update(local);
-    }).catchError((err){
-      switch(widget.type){
+    }).catchError((err) {
+      switch (widget.type) {
         case 1:
-          firebase(splitted[splitted.length - 1]).then((result){
+          firebase(splitted[splitted.length - 1]).then((result) {
             update(result);
           });
           break;
         case 2:
-          network(widget.path).then((result){
+          network(widget.path).then((result) {
             update(result);
           });
           break;
@@ -232,7 +229,7 @@ class _CacheImage extends State<CacheImage> {
     var ref = FirebaseStorage.instance.ref().child(path);
     var download = ref.writeToFile(file);
     var bytes = (await download.future).totalByteCount;
-    if(bytes.bitLength > 0) {
+    if (bytes.bitLength > 0) {
       return file.path;
     } else {
       return null;
@@ -247,7 +244,7 @@ class _CacheImage extends State<CacheImage> {
 
   @override
   void didUpdateWidget(CacheImage oldWidget) {
-    if(oldWidget.path != widget.path) {
+    if (oldWidget.path != widget.path) {
       parse();
     }
     super.didUpdateWidget(oldWidget);
@@ -260,20 +257,21 @@ class _CacheImage extends State<CacheImage> {
         width: widget.width,
         foregroundDecoration: widget.foregroundDecoration,
         child: filePath == null
-          ? null
-          : validator
-            ? new Image.asset(
-              filePath,
-              height: widget.height,
-              width: widget.width,
-              fit: widget.fit,
-              color: widget.color,
-              colorBlendMode: widget.colorBlendMode,
-              alignment: widget.alignment,
-              repeat: widget.repeat,
-              centerSlice: widget.centerSlice,
-              matchTextDirection: widget.matchTextDirection
-            ) : Container()
-      );
+            ? null
+            : validator
+                ? new Image.asset(filePath,
+                    height: widget.height,
+                    width: widget.width,
+                    fit: widget.fit,
+                    color: widget.color,
+                    colorBlendMode: widget.colorBlendMode,
+                    alignment: widget.alignment,
+                    repeat: widget.repeat,
+                    centerSlice: widget.centerSlice,
+                    matchTextDirection: widget.matchTextDirection)
+                : Container(
+                    height: widget.height,
+                    width: widget.width,
+                  ));
   }
 }

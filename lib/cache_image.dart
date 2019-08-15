@@ -289,13 +289,7 @@ class _CacheImage extends State<CacheImage> {
 
   @override
   Widget build(BuildContext context) {
-    return new AnimatedCrossFade(
-      firstChild: new Container(
-        height: widget.height,
-        width: widget.width,
-        child: widget.placeholder,
-      ),
-      secondChild: new Container(
+    return Container(
         height: widget.height,
         width: widget.width,
         foregroundDecoration: widget.foregroundDecoration,
@@ -316,11 +310,6 @@ class _CacheImage extends State<CacheImage> {
               gaplessPlayback: widget.gaplessPlayback
             )
             : widget.placeholder
-      ),
-      crossFadeState: filePath == null
-        ? CrossFadeState.showFirst
-        : CrossFadeState.showSecond,
-      duration: transition ? widget.duration : new Duration(milliseconds: 0)
-    );
+      );
   }
 }

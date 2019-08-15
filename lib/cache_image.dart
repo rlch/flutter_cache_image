@@ -20,7 +20,6 @@ class CacheImage extends StatefulWidget {
 
   CacheImage.firebase({
     Key key,
-    this.placeholder,
     this.prefix = 'appspot.com',
     this.width,
     this.height,
@@ -32,31 +31,8 @@ class CacheImage extends StatefulWidget {
     this.centerSlice,
     this.foregroundDecoration,
     this.matchTextDirection = false,
-    this.gaplessPlayback = false,
-    this.duration = const Duration(milliseconds: 300),
     @required this.path,
   }) : type = 1,
-        assert(path != null),
-        super(key: key);
-
-  CacheImage.network({
-    Key key,
-    this.placeholder,
-    this.prefix,
-    this.width,
-    this.height,
-    this.color,
-    this.colorBlendMode,
-    this.fit,
-    this.foregroundDecoration,
-    this.alignment = Alignment.center,
-    this.repeat = ImageRepeat.noRepeat,
-    this.centerSlice,
-    this.matchTextDirection = false,
-    this.gaplessPlayback = false,
-    this.duration = const Duration(milliseconds: 300),
-    @required this.path,
-  }) : type = 2,
         assert(path != null),
         super(key: key);
 
@@ -68,12 +44,6 @@ class CacheImage extends StatefulWidget {
 
   /// Widget displayed while image is loading.
   final String prefix;
-
-  /// Widget displayed while image is loading.
-  final Widget placeholder;
-
-  /// Widget displayed while image is loading from network.
-  final Duration duration;
 
   /// If non-null, require the image to have this width.
   ///
@@ -173,10 +143,6 @@ class CacheImage extends StatefulWidget {
   /// If this is true, there must be an ambient [Directionality] widget in
   /// scope.
   final bool matchTextDirection;
-
-  /// Whether to continue showing the old image (true), or briefly show nothing
-  /// (false), when the image provider changes.
-  final bool gaplessPlayback;
 
   /// BoxDecoration filter to apply over the image
   final BoxDecoration foregroundDecoration;
@@ -306,10 +272,8 @@ class _CacheImage extends State<CacheImage> {
               alignment: widget.alignment,
               repeat: widget.repeat,
               centerSlice: widget.centerSlice,
-              matchTextDirection: widget.matchTextDirection,
-              gaplessPlayback: widget.gaplessPlayback
-            )
-            : widget.placeholder
+              matchTextDirection: widget.matchTextDirection
+            ) : Container()
       );
   }
 }
